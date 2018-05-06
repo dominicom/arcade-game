@@ -1,0 +1,8 @@
+.DS_Store
+.htmlhintrc
+.stylelintrc
+.eslintrc.json
+canvas.html
+assets
+materials
+images
