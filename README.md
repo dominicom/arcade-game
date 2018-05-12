@@ -19,7 +19,7 @@ Student Project #4 during Google Front-End Development Nanodegree Program at Uda
 * Get Frog safely to purple platform and score points
 
 ## About the project
-This is #3 student project made for Udacity classroom on Front-End Web Developer track.
+This is #4 student project made for Udacity classroom on Front-End Web Developer track.
 The project is a clone of popular in '80 game called **FROGGER**.
 
 

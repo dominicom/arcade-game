@@ -12,9 +12,15 @@ const game = {
        rightBorder: 500,
         leftBorder: -150,
             hearts: document.getElementById('hearts'),
-      finalResults: document.querySelector('.finalResults')
+      finalResults: document.querySelector('.final-results'),
+               pad: document.querySelector('.game-pad')
 }
-
+const control = {
+                up: document.getElementById('up'),
+              down: document.getElementById('down'),
+              left: document.getElementById('left'),
+             right: document.getElementById('right')
+}
 
 const laser = {
   yellow: 'img/yellow-laser.png',
@@ -258,6 +264,7 @@ let resetGame = () => {
   score = 0;
   player = null;
   lives = 6;
+  game.points.innerHTML = `${score}`;
   initiate();
   startGame();
 };
@@ -298,6 +305,35 @@ document.addEventListener('keydown', function(e) {
   };
   player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
+// This listens for buttons presses and sends the keys to
+// Player.handleInput() method. This will work only on mobile devices!
+gamePad = () => {
+  document.getElementById('game-pad').onclick = function(arrow) {
+    arrow = event.target.getAttribute('id');
+    const allowedClicks = {
+         left: 'left',
+           up: 'up',
+        right: 'right',
+         down: 'down'
+    };
+    player.handleInput(allowedClicks[arrow]);
+  };
+}
+
+
+//$('.controls').removeClass('hide');
+//gamePad();
+
+
+// Simple detection of mobile device
+if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+  $('.controls').removeClass('hide');
+  gamePad();
+}
+
+
 
 
 // Default event prevent defaults methods

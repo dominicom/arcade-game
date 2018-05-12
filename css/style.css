@@ -39,7 +39,7 @@ ul {
     display: block;
     list-style-type: none;
     margin: 0;
-    -webkit-padding-start: 0.5em;
+    padding-left: 0.5em;
 }
 
 /* POPUPS */
@@ -161,4 +161,51 @@ canvas {
   background-color: #000;
   width: 100%;
   max-width: 500px;
+}
+
+
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  min-width: 320px;
+  z-index: 77;
+}
+.controls div:first-child {
+  display: block;
+}
+.controls div:last-child {
+  display: inline-flex;
+}
+.controls .arrow {
+  background: url(../img/arrow.svg) no-repeat;
+  height: 2.4em;
+  width: 2.4em;
+  opacity: 0.5;
+  border: 0.2em solid #fff;
+  border-radius: 0.2em;
+  margin: 1em;
+  cursor: pointer;
+}
+.controls .arrow:active {
+  opacity: 1;
+}
+.controls #left {
+  transform: rotate(-90deg);
+}
+.controls #right {
+  transform: rotate(90deg);
+}
+.controls #down{
+  transform: rotate(180deg);
+}
+.controls.hide {
+  display: none;
 }

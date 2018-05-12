@@ -1,6 +1,6 @@
 @media screen and (max-width: 320px) {
-  .top-panel {
-    height: 1 em;
+  body {
+    font-size: 10px;
   }
   .game {
     width: 320px;
@@ -8,11 +8,20 @@
 }
 
 @media screen and (max-width: 500px) {
-  .top-panel {
-    height: 1.5em;
+  body {
+    font-size: 15px;
+    background: #000;
   }
   .game {
     margin: 0;
+  }
+  .controls #up,
+  .controls #down,
+  .controls #left,
+  .controls #right {
+    height: 4.8em;
+    width: 4.8em;
+
   }
 }
 
@@ -20,5 +29,12 @@
   .game {
     width: 500px;
     box-shadow: 0 0 1em 0 rgba(46, 61, 73, 0.5);
+  }
+  .controls #up,
+  .controls #down,
+  .controls #left,
+  .controls #right {
+    height: 3.6em;
+    width: 3.6em;
   }
 }
