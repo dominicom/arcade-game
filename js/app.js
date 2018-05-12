@@ -1,32 +1,55 @@
-// Default settings
-const tileWidth = 100;
-const tileHeight = 80;
-const velocity = 100;
-//const canvas = document.getElementById('game-client');
-const canvas = $('canvas');
-const page = $(window);
-const game = document.getElementsByTagName('canvas');
+// Default game settings
+
+
+const game = {
+          startBtn: $('.start'),
+            splash: $('.splash'),
+        restartBtn: $('.restart'),
+               end: $('.game-over'),
+            points: document.querySelector('.points'),
+         tileWidth: 100,
+        tileHeight: 80,
+       rightBorder: 500,
+        leftBorder: -150,
+            hearts: document.getElementById('hearts'),
+      finalResults: document.querySelector('.finalResults')
+}
+
 
 const laser = {
   yellow: 'img/yellow-laser.png',
-  blue: 'img/blue-laser.png',
-  purple: 'img/purple-laser.png'
+    blue: 'img/blue-laser.png',
+  purple: 'img/purple-laser.png',
+   green: 'img/green-laser.png'
 }
 const token = {
   player: 'img/player.png',
   winner: 'img/player-win.png',
-  lost: 'img/player-lost.png'
+    lost: 'img/player-lost.png'
 }
+const offset = 1.1;
+let accelerator = 1.25;
+
+let velocity,
+    player,
+    yellowLaser,
+    blueLaser,
+    purpleLaser,
+    greenLaser,
+    allEnemies = [],
+    lives = 6,
+    score = 0;
+
 
 
 // Enemies our player must avoid
 class Enemy {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
-  constructor(x = 0, y = 160, direction, sprite, speed = (velocity + (Math.random() * (velocity * 5)))) {  // sprite = 'img/yellow-laser.png'
-    this.x = x; //100;
-    this.y = y; //100;
-    this.speed = speed; //5;
+  constructor(x = 0, y = 160, direction, sprite, speed = (velocity + (Math.random() * velocity * offset))) {
+    this.x = x;;
+    this.y = y;
+    this.speed = speed;
     this.sprite = sprite;
     this.direction = direction;
   }
@@ -37,24 +60,23 @@ class Enemy {
     // which will ensure the game runs at the same speed for
     // all computers.
     if (this.direction === '>') {
-      this.x = this.x + this.speed * dt;
-      if (this.x > 500) {
-        this.x = -150;
-        this.speed = (velocity + (Math.random() * (velocity * 5))); // Random speed
-        this.y = 2 * tileHeight + Math.floor((Math.random() * 4)) * tileHeight; // Random Y position update
+      this.x += (this.speed * dt);
+      if (this.x > game.rightBorder) {
+        this.x = game.leftBorder;
+        this.speed = (velocity + (Math.random() * velocity * offset)); // Random speed
+        this.y = (game.tileHeight * 2) + Math.floor((Math.random() * 4)) * game.tileHeight; // Random Y position update
         this.changeDirection();
       }
     }
     if (this.direction === '<') {
       this.x = this.x - this.speed * dt;
-      if (this.x < -150) {
-        this.x = 500;
-        this.speed = 100 + Math.random() * 500; // Random speed
-        this.y = 2 * tileHeight + Math.floor((Math.random() * 4)) * tileHeight; // Random Y position update
+      if (this.x < game.leftBorder) {
+        this.x = game.rightBorder;
+        this.speed = (velocity + (Math.random() * velocity * offset)); // Random speed
+        this.y = (game.tileHeight * 2) + Math.floor((Math.random() * 4)) * game.tileHeight; // Random Y position update
         this.changeDirection();
       }
     }
-    this.checkCollisions();
   }
 
   // Draw the enemy on the screen, required method for game
@@ -62,24 +84,11 @@ class Enemy {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 
-  // Collision test
-  checkCollisions() {
-
-      if (player.y + 120 >= this.y &&
-          player.y + 40 <= this.y &&
-          player.x <= this.x + 110 &&
-          player.x >= this.x - 60) {
-
-        player.lost();
-      }
-
-  }
-
-
-  //This changes enemy (vehicle) direction
+  // This changes Enemy (vehicle) direction
+  // This gives 50% chances to change 'vehicle' direction in Enemies' update() function
   changeDirection(change) {
     change = Math.random();
-    (change > 0.5) ? (this.direction = '<') : (this.direction = '>'); // 50% chances to change 'vehicle' direction
+    (change > 0.5) ? (this.direction = '<') : (this.direction = '>');
   }
 }
 
@@ -92,31 +101,31 @@ class Laser extends Enemy {
   }
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Player class
 class Player {
-  constructor(x = (2 * tileWidth), y = (6 * tileHeight)) {
+  constructor(x = (game.tileWidth * 2), y = (game.tileHeight * 6)) {
     this.x = x;
     this.y = y;
     this.move = true;
+    this.hitTest = true;
     this.sprite = token.player;
   }
   update() {
-    // iife
+    this.checkCollisions();
   }
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
   handleInput(key) {
     if (this.move) {
-      (key === 'left') ? (this.x -= tileWidth) : (this.x = this.x);
 
-      (key === 'right') ? (this.x += tileWidth) : (this.x = this.x);
+      (key === 'left') ? (this.x -= game.tileWidth) : (this.x = this.x);
 
-      (key === 'up') ? (this.y -= tileHeight) : (this.y = this.y);
+      (key === 'right') ? (this.x += game.tileWidth) : (this.x = this.x);
 
-      (key === 'down') ? (this.y += tileHeight) : (this.y = this.y);
+      (key === 'up') ? (this.y -= game.tileHeight) : (this.y = this.y);
+
+      (key === 'down') ? (this.y += game.tileHeight) : (this.y = this.y);
 
     }
     // Player move limitation
@@ -130,62 +139,157 @@ class Player {
       this.y = 480;
     }
     if (this.y <= 0) {
-      this.reset();
-            //this.points = this.points + 50;
+      this.reset('winner');
+      this.score(100);
     }
   }
-  reset(x = (2 * tileWidth), y = (6 * tileHeight)) {
+  checkCollisions() {
+    for ( let i = 0; i < allEnemies.length; i++ ) {
+      let boundingBox = this.y + 120 >= allEnemies[i].y &&
+                        this.y + 40 <= allEnemies[i].y &&
+                        this.x <= allEnemies[i].x + 110 &&
+                        this.x >= allEnemies[i].x - 60;
+
+      if (boundingBox) {
+        // hitTest condition prevents updating too much data from ckeckCollisions()
+        if (this.hitTest) {
+          lives = lives - 1;
+          console.log('hit!')
+          this.reset('lost');
+        }
+        this.hitTest = false;
+      }
+    }
+  }
+  // Restart player when catch the 'Water' (token.winner)
+  // or when collided with 'vehicules' (token.lost)
+  reset(type, x = (game.tileWidth * 2), y = (game.tileHeight * 6)) {
     this.move = false;
-    setTimeout( function win() {
-      player.sprite = token.winner;
+    setTimeout( () => {
+      this.sprite = token[type];
     }, 250);
-    setTimeout( function resetGame() {
-      player.sprite = token.player;
-      player.x = x;
-      player.y = y;
+    setTimeout( () => {
+      this.sprite = token.player;
+      this.x = x;
+      this.y = y;
     }, 1000);
-    setTimeout( function startGame() {
-      player.move = true;
+    setTimeout( () => {
+      // if player lost will initiate gameOver() later
+      if (type === 'lost') {
+        this.lose();
+      }
+      this.move = true;
+      this.hitTest = true;
     }, 1250);
   }
-  lost(x = (2 * tileWidth), y = (6 * tileHeight)) {
-    this.move = false;
-    setTimeout( function win() {
-      player.sprite = token.lost;
-    }, 250);
-    setTimeout( function resetGame() {
-      player.sprite = token.player;
-      player.x = x;
-      player.y = y;
-    }, 1000);
-    setTimeout( function startGame() {
-      player.move = true;
-    }, 1250);
+  score(points) {
+    score += points;
+    game.points.innerHTML = `${score}`;
+    velocity *= accelerator;
+
+    // initiate level hard
+    if (velocity > 700) {
+      maxLevel();
+    }
+  }
+  lose() {
+    game.hearts.removeChild(game.hearts.childNodes[lives]);
+    if (lives === 0) {
+      game.hearts.innerHTML = ' ';
+      gameOver();
+    }
   }
 }
+
+
+
+
+
+
+
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-let player = new Player();
-
-
-let yellowLaser = new Laser(-150, 160, '>', laser.yellow);
-let blueLaser = new Laser(500, 240, '<', laser.blue);
-let purpleLaser = new Laser(-150, 320, '<', laser.purple);
-
-
-let allEnemies = [];
-allEnemies.push(yellowLaser, blueLaser, purpleLaser);
 
 
 
+let initiate = () => {
+  velocity = 100;
+  player = new Player();
+  yellowLaser = new Laser(-150, 160, '>', laser.yellow);
+  blueLaser = new Laser(500, 240, '<', laser.blue);
+  purpleLaser = new Laser(-150, 320, '>', laser.purple);
+  livesAmount();
+};
+
+let livesAmount = () => {
+
+  for (let l = 1; l < lives + 1; l++) {
+    let life = document.createElement('LI');
+    console.log(l);
+    game.hearts.appendChild(life);
+    life.innerHTML = '<img src="img/heart.svg">';
+  }
+}
+
+
+
+
+let startGame = () => {
+  allEnemies.push(yellowLaser, blueLaser, purpleLaser);
+};
+
+let maxLevel = () => {
+  accelerator = 1.05;
+  greenLaser = new Laser(-150, 400, '<', laser.green);
+  allEnemies.push(greenLaser);
+}
+
+let gameOver = () => {
+  game.finalResults.innerHTML = `${score} points!`
+  game.end.slideDown(200);
+}
+
+let resetGame = () => {
+  allEnemies = [];
+  velocity = 0;
+  score = 0;
+  player = null;
+  lives = 6;
+  initiate();
+  startGame();
+};
+
+// SETUP GAME
+initiate();
+game.end.slideUp();
+
+
+
+
+
+
+// Handling popups with jQuery
+$(function() {
+  game.startBtn.on('click', function() {
+    console.log('start');
+    game.splash.slideUp(200);
+    startGame();
+  });
+
+  game.restartBtn.on('click', function() {
+    resetGame();
+    game.end.slideUp(200);
+  });
+});
 
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
   const allowedKeys = {
       37: 'left',
       38: 'up',
@@ -195,7 +299,8 @@ document.addEventListener('keyup', function(e) {
   player.handleInput(allowedKeys[e.keyCode]);
 });
 
-// Default event prevent methods
+
+// Default event prevent defaults methods
 document.addEventListener('dragstart', function(e) {
     e.preventDefault();
 });

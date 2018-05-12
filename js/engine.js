@@ -75,6 +75,7 @@ let Engine = (function(global) {
         reset();
         lastTime = Date.now();
         main();
+        //startGame();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -185,6 +186,7 @@ let Engine = (function(global) {
         'img/yellow-laser.png',
         'img/blue-laser.png',
         'img/purple-laser.png',
+        'img/green-laser.png',
         'img/player.png',
         'img/player-win.png',
         'img/player-lost.png'

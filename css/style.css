@@ -1,20 +1,31 @@
-html {
-  box-sizing: border-box;
-}
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500);
 
+
+/*
+/* GENERAL SETTINGS
+/*
+*/
 *,
 *::before,
 *::after {
   box-sizing: inherit;
 }
 
+html {
+  box-sizing: border-box;
+}
+
 html,
 body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
+
 body {
   text-align: center;
   font-size: 20px;
@@ -23,19 +34,75 @@ body {
   background-position: right top;
   background-attachment: fixed;
 }
-canvas {
-  background-color: #000;
-  width: calc((100vh * 5)/9);
-  max-width: 500px;
+
+ul {
+    display: block;
+    list-style-type: none;
+    margin: 0;
+    -webkit-padding-start: 0.5em;
 }
-.splash {
+
+/* POPUPS */
+
+.splash,
+.game-over {
   position: absolute;
+  left: 0;
+  top: 0;
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
   background-color: #fff;
-
-  display: none;
+  transition: top 0.3s;
 }
+
+.splash {
+  z-index: 99;
+}
+
+.game-over {
+  z-index: 88;
+}
+
+.finalResults {
+  color: #aa7ecd;
+  font-weight: 500;
+  font-size: 1.25em;
+  border-bottom: solid 0.1em #aa7ecd;
+}
+
+button {
+  transition: 0.3s;
+  display: inline-flex;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 1em;
+  color: #02ccba;
+  outline: none;
+  outline-color: initial;
+  outline-style: none;
+  outline-width: initial;
+  text-transform: uppercase;
+  background-color: #fff;
+  border: 0.1em solid #02ccba;
+  border-radius: 1.5em;
+  padding: 0.75em;
+  margin: 2em;
+  cursor: pointer;
+}
+button:hover {
+  color: #aa7ecd;
+  border: 0.1em solid #aa7ecd;
+  background-color: #444;
+}
+/*
+/* GAME
+/*
+*/
 .game {
   background-color: #000;
   text-align: center;
@@ -45,8 +112,9 @@ canvas {
   margin-right: auto;
   margin-bottom: 1em;
   text-align: center;
-
 }
+
+/* TOP PANEL */
 .top-panel {
   width: 100%;
   height: 2em;
@@ -54,31 +122,43 @@ canvas {
   text-align: center;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
+.lives,
+.score {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.lives {
+  align-items: center;
+}
+
+.hearts {
+  display: inline-flex;
+  flex-wrap: nowrap;
+}
+.hearts li {
+  width: 1em;
+  height: 1em;
+  margin-left: 0.25em;
+}
+.points {
+  text-align: right;
+  width: 2.8em;
+  height: 1em;
+}
+
+/* GAME CANVAS CONTAINER */
 #canvas-container {
   text-align: center;
   display: block;
 }
-@media screen and (max-width: 500px){
-  .top-panel {
-    height: 2em;
-  }
-  .game {
-
-    /* height: 100%; */
-    margin: 0;
-  }
+canvas {
+  background-color: #000;
+  width: 100%;
+  max-width: 500px;
 }
-
-@media screen and (min-width: 501px){
-  .game {
-    width: 500px;
-    box-shadow: 0 0 1em 0 rgba(46, 61, 73, 0.5);
-  }
-}
-
-/* @media screen and (min-height: 750px){
-  canvas {
-    height: 700px;
-  }
-} */

@@ -1,0 +1,24 @@
+@media screen and (max-width: 320px) {
+  .top-panel {
+    height: 1 em;
+  }
+  .game {
+    width: 320px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .top-panel {
+    height: 1.5em;
+  }
+  .game {
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 501px) {
+  .game {
+    width: 500px;
+    box-shadow: 0 0 1em 0 rgba(46, 61, 73, 0.5);
+  }
+}

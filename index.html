@@ -2,24 +2,47 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Frogger</title>
+  <title>:: Astro Frogger ::</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="js/jquery.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
   <div class="splash">
-
+    <h2> Welcome, welcome...</h2>
+    <span>Everybody is welcome.
+      Take a seat and play! Be aware of lasers and finish on purple platform</span>
+    <button class="start">Start Game</button>
   </div>
+
   <div class="game">
     <div class="top-panel">
-  
+      <div class="lives">
+        <span>Lives:</span>
+        <ul id="hearts" class="hearts">
+        </ul>
+      </div>
+      <div class="score">
+        <span>Score:</span>
+        <span class="points">0</span>
+      </div>
     </div>
     <div id="canvas-container">
     </div>
   </div>
+
+  <div class="game-over">
+    <h2>Game Over!</h2>
+    <span>You have scored</span>
+    <p class="finalResults">
+    points!
+    </p>
+    <button class="restart">Restart Game</button>
+  </div>
+
   <script src="js/resources.js"></script>
   <script src="js/app.js"></script>
   <script src="js/engine.js"></script>

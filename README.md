@@ -1,8 +1,32 @@
 # Classic Arcade Game Clone Project
 
-**Arcade Game**
+**Astro Frogger** - Classic Arcade Game Clone
 
 Student Project #4 during Google Front-End Development Nanodegree Program at Udacity
+
+[LIVE DEMO](https://dominicom.github.io/arcade-game/)
+
+## Table of Contents
+
+* [How to play](#how-to-play)
+* [About the project](#about-the-project)
+* [Contributing](#contributing)
+
+## How to play
+* Open the game [here](https://dominicom.github.io/arcade-game/)
+* Handle Frog token with `arrow keys`
+* Avoid enemy lasers - these ones everywhere
+* Get Frog safely to purple platform and score points
+
+## About the project
+This is #3 student project made for Udacity classroom on Front-End Web Developer track.
+The project is a clone of popular in '80 game called **FROGGER**.
+
+
+
+
+
+
 
 frontend-nanodegree-arcade-game
 ===============================
