@@ -34,12 +34,22 @@ body {
   background-position: right top;
   background-attachment: fixed;
 }
-
+h4 {
+  margin: 0.5em;
+}
 ul {
-    display: block;
-    list-style-type: none;
-    margin: 0;
-    padding-left: 0.5em;
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0.5em;
+}
+::selection {
+  background-color: #aa7ecd;
+  color: #fff;
+}
+::-moz-selection {
+  background-color: #aa7ecd;
+  color: #fff;
 }
 
 /* POPUPS */
@@ -52,10 +62,10 @@ ul {
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
   flex-direction: column;
-  margin: auto;
+  margin: 0 auto;
   background-color: #fff;
   transition: top 0.3s;
 }
@@ -63,16 +73,36 @@ ul {
 .splash {
   z-index: 99;
 }
+.logo {
+  width: 100%;
+  height: 50vh;
+  background: url(../img/logo.png) no-repeat;
+  background-position: top center;
+  background-size: contain;
+  background-color: #000;
+}
+.info {
+  text-transform: uppercase;
+  font-weight: 300;
+  margin: 0 2em;
+}
+mark {
+  background-color: #02ccba;
+  font-size: 0.9em;
+  font-weight: 400;
+  padding: 0.1em 0.3em;
+}
+
 
 .game-over {
+  justify-content: center;
   z-index: 88;
 }
 
-.finalResults {
-  color: #aa7ecd;
+.final-results {
   font-weight: 500;
-  font-size: 1.25em;
-  border-bottom: solid 0.1em #aa7ecd;
+  margin: 0.5em;
+  /* font-size: 1.25em; */
 }
 
 button {
@@ -91,7 +121,7 @@ button {
   border: 0.1em solid #02ccba;
   border-radius: 1.5em;
   padding: 0.75em;
-  margin: 2em;
+  margin: 1em;
   cursor: pointer;
 }
 button:hover {

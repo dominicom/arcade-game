@@ -15,7 +15,7 @@ Student Project #4 during Google Front-End Development Nanodegree Program at Uda
 ## How to play
 * Open the game [here](https://dominicom.github.io/arcade-game/)
 * Handle Frog token with `arrow keys` on keyboard or screen (mobile)
-* Avoid enemy lasers - these ones everywhere
+* Avoid enemy lasers - these ones are everywhere
 * Get Frog safely to purple platform and score points
 
 ## About the project

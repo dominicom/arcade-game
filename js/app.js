@@ -1,6 +1,4 @@
 // Default game settings
-
-
 const game = {
           startBtn: $('.start'),
             splash: $('.splash'),
@@ -264,6 +262,7 @@ let gameOver = () => {
 let resetGame = () => {
   allEnemies = [];
   velocity = 0;
+  ratingPoints = 50;
   score = 0;
   player = null;
   lives = 6;
@@ -323,12 +322,6 @@ gamePad = () => {
     player.handleInput(allowedClicks[arrow]);
   };
 }
-
-
-// $('.controls').removeClass('hide');
-// gamePad();
-
-
 // Simple detection of mobile device
 if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
   $('.controls').removeClass('hide');
