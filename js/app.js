@@ -13,7 +13,7 @@ const game = {
         leftBorder: -150,
             hearts: document.getElementById('hearts'),
       finalResults: document.querySelector('.final-results'),
-               pad: document.querySelector('.game-pad')
+               pad: document.getElementById('game-pad')
 }
 const control = {
                 up: document.getElementById('up'),
@@ -50,8 +50,6 @@ let velocity,
 
 // Enemies our player must avoid
 class Enemy {
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
   constructor(x = 0, y = 160, direction, sprite, speed = (velocity + (Math.random() * velocity * offset))) {
     this.x = x;;
     this.y = y;
@@ -118,7 +116,22 @@ class Player {
   }
   update() {
     this.checkCollisions();
+    // Player move limitation
+    if (this.x < 0) {
+      this.x = 0;
+    } else if (this.x > 400) {
+      this.x = 400;
+    } else if (this.y < 0) {
+      this.y = 0;
+    } else if (this.y > 480) {
+      this.y = 480;
+    }
+    // Player gets to the "water"
+    if (this.move && this.y <= 0) {
+      this.reset('winner');
+    }
   }
+  // Draw the player on the screen, required method for game
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
@@ -134,20 +147,7 @@ class Player {
       (key === 'down') ? (this.y += game.tileHeight) : (this.y = this.y);
 
     }
-    // Player move limitation
-    if (this.x < 0) {
-      this.x = 0;
-    } else if (this.x > 400) {
-      this.x = 400;
-    } else if (this.y < 0) {
-      this.y = 0;
-    } else if (this.y > 480) {
-      this.y = 480;
-    }
-    if (this.y <= 0) {
-      this.reset('winner');
-      this.score(100);
-    }
+
   }
   checkCollisions() {
     for ( let i = 0; i < allEnemies.length; i++ ) {
@@ -157,20 +157,23 @@ class Player {
                         this.x >= allEnemies[i].x - 60;
 
       if (boundingBox) {
-        // hitTest condition prevents updating too much data from ckeckCollisions()
+        // hitTest prevents updating too much data from ckeckCollisions()
         if (this.hitTest) {
+          this.move = false;
           lives = lives - 1;
-          console.log('hit!')
           this.reset('lost');
         }
         this.hitTest = false;
       }
     }
   }
-  // Restart player when catch the 'Water' (token.winner)
+  // Restart player when catch the 'water' (token.winner)
   // or when collided with 'vehicules' (token.lost)
   reset(type, x = (game.tileWidth * 2), y = (game.tileHeight * 6)) {
     this.move = false;
+    if (type === 'winner') {
+      this.score(100);
+    }
     setTimeout( () => {
       this.sprite = token[type];
     }, 250);
@@ -210,16 +213,11 @@ class Player {
 
 
 
-
-
-
-
-
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-
+// SETUP GAME
 
 let initiate = () => {
   velocity = 100;
@@ -230,11 +228,15 @@ let initiate = () => {
   livesAmount();
 };
 
-let livesAmount = () => {
+let maxLevel = () => {
+  accelerator = 1.05;
+  greenLaser = new Laser(-150, 400, '<', laser.green);
+  allEnemies.push(greenLaser);
+}
 
+let livesAmount = () => {
   for (let l = 1; l < lives + 1; l++) {
     let life = document.createElement('LI');
-    console.log(l);
     game.hearts.appendChild(life);
     life.innerHTML = '<img src="img/heart.svg">';
   }
@@ -246,12 +248,6 @@ let livesAmount = () => {
 let startGame = () => {
   allEnemies.push(yellowLaser, blueLaser, purpleLaser);
 };
-
-let maxLevel = () => {
-  accelerator = 1.05;
-  greenLaser = new Laser(-150, 400, '<', laser.green);
-  allEnemies.push(greenLaser);
-}
 
 let gameOver = () => {
   game.finalResults.innerHTML = `${score} points!`
@@ -269,7 +265,7 @@ let resetGame = () => {
   startGame();
 };
 
-// SETUP GAME
+
 initiate();
 game.end.slideUp();
 
@@ -281,7 +277,6 @@ game.end.slideUp();
 // Handling popups with jQuery
 $(function() {
   game.startBtn.on('click', function() {
-    console.log('start');
     game.splash.slideUp(200);
     startGame();
   });
@@ -310,7 +305,7 @@ document.addEventListener('keydown', function(e) {
 // This listens for buttons presses and sends the keys to
 // Player.handleInput() method. This will work only on mobile devices!
 gamePad = () => {
-  document.getElementById('game-pad').onclick = function(arrow) {
+  game.pad.onclick = (arrow) => {
     arrow = event.target.getAttribute('id');
     const allowedClicks = {
          left: 'left',
@@ -320,11 +315,19 @@ gamePad = () => {
     };
     player.handleInput(allowedClicks[arrow]);
   };
+
+  let currentTime = Date.now();
+  game.pad.ontouchstart = (e) => { //touchstart
+    if (e.timeStamp - currentTime < 300) {
+      e.preventDefault();
+      console.log('prevent działa')
+    }
+  };
 }
 
 
-//$('.controls').removeClass('hide');
-//gamePad();
+// $('.controls').removeClass('hide');
+// gamePad();
 
 
 // Simple detection of mobile device
