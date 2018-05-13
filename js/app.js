@@ -33,8 +33,8 @@ const token = {
   winner: 'img/player-win.png',
     lost: 'img/player-lost.png'
 }
-const offset = 1.1;
-let accelerator = 1.25;
+const offset = 0.75;
+let accelerator = 1.15;
 
 let velocity,
     player,
@@ -44,7 +44,8 @@ let velocity,
     greenLaser,
     allEnemies = [],
     lives = 6,
-    score = 0;
+    score = 0,
+    ratingPoints = 50;
 
 
 
@@ -172,7 +173,7 @@ class Player {
   reset(type, x = (game.tileWidth * 2), y = (game.tileHeight * 6)) {
     this.move = false;
     if (type === 'winner') {
-      this.score(100);
+      this.score(ratingPoints);
     }
     setTimeout( () => {
       this.sprite = token[type];
@@ -197,8 +198,8 @@ class Player {
     velocity *= accelerator;
 
     // initiate level hard
-    if (velocity > 700) {
-      maxLevel();
+    if (score > 250) {
+      levelUp();
     }
   }
   lose() {
@@ -228,10 +229,16 @@ let initiate = () => {
   livesAmount();
 };
 
-let maxLevel = () => {
-  accelerator = 1.05;
-  greenLaser = new Laser(-150, 400, '<', laser.green);
-  allEnemies.push(greenLaser);
+let levelUp = (color) => {
+  accelerator = 1.01;
+  ratingPoints *= 2;
+  const random = ['green', 'yellow', 'blue', 'purple'];
+
+
+  color = laser[random[Math.floor((Math.random() * random.length))]];
+  newLaser = new Laser(-150, 400, '>', color);
+
+  allEnemies.push(newLaser);
 }
 
 let livesAmount = () => {
@@ -314,14 +321,6 @@ gamePad = () => {
          down: 'down'
     };
     player.handleInput(allowedClicks[arrow]);
-  };
-
-  let currentTime = Date.now();
-  game.pad.ontouchstart = (e) => { //touchstart
-    if (e.timeStamp - currentTime < 300) {
-      e.preventDefault();
-      console.log('prevent działa')
-    }
   };
 }
 
