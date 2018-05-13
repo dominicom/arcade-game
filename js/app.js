@@ -66,8 +66,10 @@ class Enemy {
       this.x += (this.speed * dt);
       if (this.x > game.rightBorder) {
         this.x = game.leftBorder;
-        this.speed = (velocity + (Math.random() * velocity * offset)); // Random speed
-        this.y = (game.tileHeight * 2) + Math.floor((Math.random() * 4)) * game.tileHeight; // Random Y position update
+        // Random speed
+        this.speed = (velocity + (Math.random() * velocity * offset));
+        // Random Y position update
+        this.y = (game.tileHeight * 2) + Math.floor((Math.random() * 4)) * game.tileHeight;
         this.changeDirection();
       }
     }
@@ -75,8 +77,10 @@ class Enemy {
       this.x = this.x - this.speed * dt;
       if (this.x < game.leftBorder) {
         this.x = game.rightBorder;
-        this.speed = (velocity + (Math.random() * velocity * offset)); // Random speed
-        this.y = (game.tileHeight * 2) + Math.floor((Math.random() * 4)) * game.tileHeight; // Random Y position update
+        // Random speed
+        this.speed = (velocity + (Math.random() * velocity * offset));
+        // Random Y position update
+        this.y = (game.tileHeight * 2) + Math.floor((Math.random() * 4)) * game.tileHeight;
         this.changeDirection();
       }
     }
@@ -115,7 +119,7 @@ class Player {
   }
   update() {
     this.checkCollisions();
-    // Player move limitation
+    // Player move limitation on the game board
     if (this.x < 0) {
       this.x = 0;
     } else if (this.x > 400) {
