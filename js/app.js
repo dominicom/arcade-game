@@ -259,7 +259,7 @@ let startGame = () => {
 };
 
 let gameOver = () => {
-  game.finalResults.innerHTML = `${score} points!`
+  game.finalResults.innerHTML = `${score}`
   game.end.slideDown(200);
 }
 
