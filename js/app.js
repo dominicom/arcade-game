@@ -1,3 +1,4 @@
+'esversion: 6';
 // Default game settings
 const game = {
           startBtn: $('.start'),
@@ -12,25 +13,25 @@ const game = {
             hearts: document.getElementById('hearts'),
       finalResults: document.querySelector('.final-results'),
                pad: document.getElementById('game-pad')
-}
+};
 const control = {
                 up: document.getElementById('up'),
               down: document.getElementById('down'),
               left: document.getElementById('left'),
              right: document.getElementById('right')
-}
+};
 
 const laser = {
   yellow: 'img/yellow-laser.png',
     blue: 'img/blue-laser.png',
   purple: 'img/purple-laser.png',
    green: 'img/green-laser.png'
-}
+};
 const token = {
   player: 'img/player.png',
   winner: 'img/player-win.png',
     lost: 'img/player-lost.png'
-}
+};
 const offset = 0.75;
 let accelerator = 1.15;
 
@@ -50,7 +51,7 @@ let velocity,
 // Enemies our player must avoid
 class Enemy {
   constructor(x = 0, y = 160, direction, sprite, speed = (velocity + (Math.random() * velocity * offset))) {
-    this.x = x;;
+    this.x = x;
     this.y = y;
     this.speed = speed;
     this.sprite = sprite;
@@ -128,9 +129,8 @@ class Player {
       this.y = 0;
     } else if (this.y > 480) {
       this.y = 480;
-    }
+    } else if (this.move && this.y <= 0) {
     // Player gets to the "water"
-    if (this.move && this.y <= 0) {
       this.reset('winner');
     }
   }
@@ -241,7 +241,7 @@ let levelUp = (color) => {
   newLaser = new Laser(-150, 400, '>', color);
 
   allEnemies.push(newLaser);
-}
+};
 
 let livesAmount = () => {
   for (let l = 1; l < lives + 1; l++) {
@@ -249,7 +249,7 @@ let livesAmount = () => {
     game.hearts.appendChild(life);
     life.innerHTML = '<img src="img/heart.svg">';
   }
-}
+};
 
 
 
@@ -259,9 +259,9 @@ let startGame = () => {
 };
 
 let gameOver = () => {
-  game.finalResults.innerHTML = `${score}`
+  game.finalResults.innerHTML = `${score}`;
   game.end.slideDown(200);
-}
+};
 
 let resetGame = () => {
   allEnemies = [];
