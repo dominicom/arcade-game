@@ -1,4 +1,3 @@
-'esversion: 6';
 // Default game settings
 const game = {
           startBtn: $('.start'),
